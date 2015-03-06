@@ -1,7 +1,8 @@
 NearSide
 ========
+Because we make for sense than The Far Side.
 
-NearSide is used to process antenna near-field data.
+Description: a package for processing antenna near-field data.
 
 Install
 =======
