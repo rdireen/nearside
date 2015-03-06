@@ -1,6 +1,6 @@
 NearSide
 ========
-Because we make for sense than The Far Side.
+Because we make more sense than The Far Side.
 
 Description: a package for processing antenna near-field data.
 
