@@ -1,0 +1,14 @@
+
+
+*.pyc
+*.pyd
+*.so
+*~
+.coverage
+cover/
+build/
+images/
+dist/
+nearside.egg-info/
+nose*
+.eggs/

@@ -1,0 +1,22 @@
+language: python
+python:
+  - "2.7"
+  - "3.2"
+  - "3.3"
+  - "3.4"
+# command to install dependencies
+install:
+  - "pip install ."
+  - "pip install -r travis-reqs.txt"
+  - "pip install coveralls"
+# command to run tests
+script: 
+  - "nosetests --with-coverage --cover-erase"
+  
+after_success:
+  - coveralls
+
+# here is a list of whitelisted branches
+branches:
+  only:
+    - master
