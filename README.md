@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/rdireen/nearside.svg?branch=master)](https://travis-ci.org/rdireen/nearside)
+
+[![Build Status](https://travis-ci.org/rdireen/nearside.svg?branch=master)](https://travis-ci.org/rdireen/nearside) 
 [![Coverage Status](https://coveralls.io/repos/rdireen/nearside/badge.svg?branch=master)](https://coveralls.io/r/rdireen/nearside?branch=master)
 
 NearSide
