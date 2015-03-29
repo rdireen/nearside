@@ -28,6 +28,8 @@ import os
 from os.path import dirname
 import sys
 
+import nearside.sphere_low_level as sphere_low_level
+
 
 with open(dirname(__file__) + '/pkg_info.json') as fp:
     _info = json.load(fp)
