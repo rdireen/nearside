@@ -1,5 +1,4 @@
 nose
 wheel
 six
-matplotlib
 spherepy
