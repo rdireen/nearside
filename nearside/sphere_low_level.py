@@ -31,23 +31,23 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import absolute_import
 from six.moves import range  #use range instead of xrange
-#-----------------------------------------------------------------------------
+#----------------------------------------------------------------------------
 
-#---------------------------------------------------------------------3rd Party
+#--------------------------------------------------------------------3rd Party
 import numpy as np
 import spherepy as sp
 
 
-#==============================================================================
+#=============================================================================
 # Global Declarations
-#==============================================================================
+#=============================================================================
 
 external = 0
 internal = 1
 
-#==============================================================================
+#=============================================================================
 # Routines
-#==============================================================================
+#=============================================================================
 
 
 
@@ -83,7 +83,8 @@ def bc(nu, n):
 
     alpha = nu + n
 
-    v[alpha] = np.sqrt(2 * alpha + 1) * c3 * (alpha * (alpha + 1) - c2) ** 2 * c1 * t[a]
+    v[alpha] = np.sqrt(2 * alpha + 1) * c3 * \
+               (alpha * (alpha + 1) - c2) ** 2 * c1 * t[a]
 
     for m in range(a - 1, -1, -1):
         alpha = alpha - 2
@@ -149,12 +150,12 @@ def translate_mu_plus_minus_one_probe(NN, muneg1, mu1, kr, region=external):
     R = np.zeros([NN+1,4], dtype = np.complex128)
 
     for n in range(1, NN + 1):
-        for m in range(0, mul1.shape[0]):
+        for m in range(1, mu1.shape[0] + 1):
             BB, CC =  bc_comp(m, n, kr, region)
-            R[n, 0] += +mu1[m, 0] * BB + mu1[m, 1] * CC
-            R[n, 1] += -mu1[m, 0] * CC - mu1[m, 1] * BB
-            R[n, 2] += +muneg1[m, 0] * BB - muneg1[m, 1] * CC
-            R[n, 3] += +muneg1[m, 0] * CC - muneg1[m, 1] * BB
+            R[n, 0] += +mu1[m - 1, 0] * BB + mu1[m - 1, 1] * CC
+            R[n, 1] += -mu1[m - 1, 0] * CC - mu1[m - 1, 1] * BB
+            R[n, 2] += +muneg1[m - 1, 0] * BB - muneg1[m - 1, 1] * CC
+            R[n, 3] += +muneg1[m - 1, 0] * CC - muneg1[m - 1, 1] * BB
 
     return R
 

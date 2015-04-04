@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 # Copyright (C) 2015  Randy Direen <nearside@direentech.com>
 #
 # This file is part of NearSide.
