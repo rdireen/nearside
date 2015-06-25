@@ -15,16 +15,6 @@
 # You should have received a copy of the GNU General Public License
 # along with NearSide.  If not, see <http://www.gnu.org/licenses/>
 
-"""***************************************************************************
-
-         structures: Holds all the structures containing antenna data 
-
-Randy Direen
-3/06/2015
-
-A description
-
-***************************************************************************"""
 
 #--------------------------Place in each *.py file----------------------------
 from __future__ import division
@@ -33,20 +23,7 @@ from __future__ import absolute_import
 from six.moves import range  #use range instead of xrange
 #-----------------------------------------------------------------------------
 
-#--------------------------------------------------------------------3rd Party
-import numpy as np
-import spherepy as sp
-
-#=============================================================================
-# Objects
-#=============================================================================
-
-class PlanarMeasurementUniform(object):
-    pass
-
-class SphericalMeasurementUniform(object):
-    pass
-
-#=============================================================================
-# Functions
-#=============================================================================
+import json
+import os
+from os.path import dirname
+import sys

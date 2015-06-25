@@ -36,7 +36,7 @@ from unittest import TestCase
 from six.moves import range  #use range instead of xrange
 
 import numpy as np
-import nearside as ns
+import nearside.spherical as ns
 
 
 class TestSphereLowLevelProbeCorrect(TestCase):
