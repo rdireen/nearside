@@ -30,8 +30,8 @@ import sys
 
 
 from nearside.probe import *
-import nearside.spherical.sphere_low_level as sphere_low_level
-from nearside.spherical.spherical_structures import *
+import nearside.spherical.low_level as sphere_low_level
+from nearside.spherical.structures import *
 
 
 with open(dirname(__file__) + '/pkg_info.json') as fp:

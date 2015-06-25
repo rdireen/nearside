@@ -17,10 +17,10 @@
 
 """***************************************************************************
 
-                probe: Everything you need to work with probes 
+                Standard operations on spherical structures
 
 Randy Direen
-3/06/2015
+6/25/2015
 
 A description
 
@@ -33,39 +33,39 @@ from __future__ import absolute_import
 from six.moves import range  #use range instead of xrange
 #-----------------------------------------------------------------------------
 
-#---------------------------------------------------------------------3rd Party
+#---------------------------------------------------------------------Built-ins
+
+import json
+from os.path import dirname
+
+#--------------------------------------------------------------------3rd Party
 import numpy as np
 import spherepy as sp
 
-#==============================================================================
-# Objects
-#==============================================================================
-
-class ScalarProbeSingleFrequency(object):
-    pass
-
-class VectorProbeSingleFrequency(object):
-    pass
+#------------------------------------------------------------------------Custom
+import nearside.spherical.structures as structures
 
 #==============================================================================
-# Functions
+# Operations
 #==============================================================================
 
-def probe_reciprocity( probe ):
+def reciprocity( spherical_coefficients ):
     pass
 
-def probe_directivity( probe ):
+def directivity( spherical_coefficients ):
+    pass 
+
+def probe_correct( spherical_coefficients, probe):
     pass
 
-def rotate_around_y_by_pi( probe ):
+def transform_to_vcoeffs( transverse_uniform ):
     pass
 
-def translate_external_case( probe ):
+def transform_to_transverse_uniform( vector_coeffs ):
     pass
 
-def translate_internal_case( probe ):
+def transform_to_far_field( vector_coeffs ):
     pass
 
-
-
-
+def transform_to_local_field( vector_coeffs, radius_meters ):
+    pass

@@ -70,7 +70,7 @@ class SphericalVectorCoeffs(object):
 
 #-=-=-=-=-=-=-=-=-=-=-= MEASURED ON UNIFORM GRID =-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 # These objects use the algorithms that require data to be equally spaced in
-# the theta direction and the phi direction.
+# the theta direction and in the phi direction.
 
 class SphericalMeasurementScalarUniform(object):
     pass

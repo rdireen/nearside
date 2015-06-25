@@ -47,7 +47,7 @@ class TestSphereLowLevelProbeCorrect(TestCase):
         The test compares the output to the same routine written in Matlab
         """
 
-        sll = ns.sphere_low_level
+        sll = ns.low_level
 
         # These were computed in MATLAB and copied here:
         ml = [[1],
@@ -89,7 +89,7 @@ class TestSphereLowLevelProbeCorrect(TestCase):
 
         The test compares the output to the same routine written in Matlab
         """
-        sll = ns.sphere_low_level   
+        sll = ns.low_level   
         
         # These were computed in MATLAB and copied here:
         ml = [[0.282094791773878, 0.244301255951460, 0.063078313050504],
@@ -125,7 +125,7 @@ class TestSphereLowLevelProbeCorrect(TestCase):
 
         The test compares the output to the same routine written in Matlab
         """
-        sll = ns.sphere_low_level 
+        sll = ns.low_level 
 
         # These were computed in MATLAB and copied here:
         ml = [[0.4052267294011047+0.6311032386059223j, 1.036329968007027+0.2258765092048176j ],
@@ -195,7 +195,7 @@ class TestSphereLowLevelProbeCorrect(TestCase):
 
         The test compares the output to the same routine written in Matlab
         """
-        sll = ns.sphere_low_level 
+        sll = ns.low_level 
 
         # These were computed in MATLAB and copied here:
         ml = [[0.4052267294011047, 0+0.2258765092048176j     ],
@@ -265,7 +265,7 @@ class TestSphereLowLevelProbeCorrect(TestCase):
 
         The test compares the output to the same routine written in Matlab
         """
-        sll = ns.sphere_low_level 
+        sll = ns.low_level 
 
         ml = [
              [ 0.000000000000000e+00 + 0.000000000000000e+00j,  0.000000000000000e+00 + 0.000000000000000e+00j,  0.000000000000000e+00 + 0.000000000000000e+00j,  0.000000000000000e+00 + 0.000000000000000e+00j],
@@ -313,7 +313,7 @@ class TestSphereLowLevelProbeCorrect(TestCase):
 
         The test compares the output to the same routine written in Matlab
         """
-        sll = ns.sphere_low_level 
+        sll = ns.low_level 
 
         ml = [
               [ 0.000000000000000e+00 + 0.000000000000000e+00j,  0.000000000000000e+00 + 0.000000000000000e+00j,  0.000000000000000e+00 + 0.000000000000000e+00j,  0.000000000000000e+00 + 0.000000000000000e+00j],
