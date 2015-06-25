@@ -159,6 +159,44 @@ def translate_mu_plus_minus_one_probe(NN, muneg1, mu1, kr, region=external):
 
     return R
 
+def make_inverse_R_matrix(R, idx):
+    M = np.zeros((2, 2), dtype = np.complex128)
+
+    M[0, 0] = -R[n, 1] - R[n, 3]
+    M[0, 1] = -R[n, 1] + R[n, 3]
+    M[1, 0] = R[n, 0] + R[n, 2]
+    M[1, 1] = R[n, 0] - R[n, 2]
+
+    det = R[n, 0] * R[n, 3] - R[n, 1] * R[n, 2]
+
+    return M * 1j * np.sqrt((2.0 * n + 1.0) / (4 * np.pi)) / ( 2 * det)
+
+def make_forward_R_matrix(R, idx):
+    M = np.zeros((2, 2), dtype = np.complex128)
+
+    M[0, 0] = R[n, 1] - R[n, 3]
+    M[0, 1] = R[n, 1] + R[n, 3]
+    M[1, 0] = -R[n, 0] - R[n, 2]
+    M[1, 1] = -R[n, 0] - R[n, 2]
+
+    return M * 1j * np.sqrt((4 * np.pi) / (2.0 * n + 1.0))
+
+def probe_correct(R, tsh):
+    """ Corrects the probe response psh to the sh pattern tsh. R is the 4
+    column matrix of translated probe coefficients."""
+
+    pass
+
+def probe_response(R, psh):
+    """ Calulates the probe response psh to the sh pattern tsh. R is the 4
+    column matrix of translated probe coefficients. """
+
+    pass
+
+    
+
+
+
 
 
 

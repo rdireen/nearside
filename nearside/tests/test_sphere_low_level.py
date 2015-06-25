@@ -76,10 +76,11 @@ class TestSphereLowLevelProbeCorrect(TestCase):
             for j3 in range(0,4):
                 value_python = sll.wigner3j_mzero_squared(j2, j3)
                 value_matlab = ml[idx]
+                max = np.amax(np.abs(value_matlab))
                 for n, _ in enumerate(ml[idx]): 
-                    self.assertAlmostEqual(value_python[n],
-                                           value_matlab[n],
-                                           places=15)
+                    self.assertAlmostEqual(value_python[n] / max,
+                                           value_matlab[n] / max,
+                                           places=12)
 
                 idx += 1
 
@@ -112,10 +113,11 @@ class TestSphereLowLevelProbeCorrect(TestCase):
             for n in range(1,4):
                 value_python = sll.bc(nu, n)
                 value_matlab = ml[idx]
+                max = np.amax(np.abs(value_matlab))
                 for k, _ in enumerate(ml[idx]): 
-                    self.assertAlmostEqual(value_python[k],
-                                           value_matlab[k],
-                                           places=15)
+                    self.assertAlmostEqual(value_python[k] / max,
+                                           value_matlab[k] / max,
+                                           places=12)
                 idx += 1 
            
     def test_bc_comp_external(self):
@@ -179,11 +181,12 @@ class TestSphereLowLevelProbeCorrect(TestCase):
                 for x in np.arange(1, 3.5, 0.5):
                     value_python = sll.bc_comp(nu, n, x, region=sll.external)
                     value_matlab = ml[idx]
-                    self.assertAlmostEqual(value_python[0],
-                                           value_matlab[0],
+                    max = np.amax(np.abs(value_matlab))
+                    self.assertAlmostEqual(value_python[0] / max,
+                                           value_matlab[0] / max,
                                            places=12)
-                    self.assertAlmostEqual(value_python[1],
-                                           value_matlab[1],
+                    self.assertAlmostEqual(value_python[1] / max,
+                                           value_matlab[1] / max,
                                            places=12)
                     idx += 1 
 
@@ -248,11 +251,12 @@ class TestSphereLowLevelProbeCorrect(TestCase):
                 for x in np.arange(1, 3.5, 0.5):
                     value_python = sll.bc_comp(nu, n, x, region=sll.internal)
                     value_matlab = ml[idx]
-                    self.assertAlmostEqual(value_python[0],
-                                           value_matlab[0],
+                    max = np.amax(np.abs(value_matlab))
+                    self.assertAlmostEqual(value_python[0] / max,
+                                           value_matlab[0] / max,
                                            places=12)
-                    self.assertAlmostEqual(value_python[1],
-                                           value_matlab[1],
+                    self.assertAlmostEqual(value_python[1] / max,
+                                           value_matlab[1] / max,
                                            places=12)
                     idx += 1 
 
@@ -350,7 +354,7 @@ class TestSphereLowLevelProbeCorrect(TestCase):
         # Relative difference
         max_diff = np.amax(np.abs(R_python - R_matlab) / (np.abs(R_matlab) + 1e-15))
 
-        self.assertLess(max_diff, 1e-14)
+        self.assertLess(max_diff, 1e-12)
 
 
 
