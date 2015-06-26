@@ -37,23 +37,126 @@ from six.moves import range  #use range instead of xrange
 
 import json
 from os.path import dirname
+import copy
 
 #--------------------------------------------------------------------3rd Party
 import numpy as np
 import spherepy as sp
 
 #------------------------------------------------------------------------Custom
-import nearside.spherical.structures as structures
+
+#==============================================================================
+# Decorators
+#==============================================================================
+
+
 
 #==============================================================================
 # Operations
 #==============================================================================
 
 def reciprocity( spherical_coefficients ):
+    
+    if isinstance( spherical_coefficients, sp.VectorCoefs): 
+          
+        return _reciprocity_implemented( spherical_coefficients )
+
+    else:
+        ValueError("cannot perform reciprocity on this object.")
+
+
+
+def _reciprocity_implemented( spherical_coefficients ):
+
+    sc = spherical_coefficients.copy()
+
+    A = sc[:,0]
+    A[0][1::2] = -A[0][1::2]
+    A[1][0::2] = -A[1][0::2]
+    sc.scoef1[:,0] = A[0]
+    sc.scoef2[:,0] = A[1]
+
+    for k in range(1, sc.mmax + 1):
+        if (k % 2 != 1):
+            A = sc[:,k]
+            A[0][1::2] = -A[0][1::2]
+            A[1][0::2] = -A[1][0::2]
+            sc.scoef1[:,k] = A[0]
+            sc.scoef2[:,k] = A[1]
+
+            A = sc[:,-k]
+            A[0][1::2] = -A[0][1::2]
+            A[1][0::2] = -A[1][0::2]
+            sc.scoef1[:,-k] = A[0]
+            sc.scoef2[:,-k] = A[1]
+        else:
+            A = sc[:,k]
+            A[1][1::2] = -A[1][1::2]
+            A[0][0::2] = -A[0][0::2]
+            sc.scoef1[:,k] = A[0]
+            sc.scoef2[:,k] = A[1]
+
+            A = sc[:,-k]
+            A[1][1::2] = -A[1][1::2]
+            A[0][0::2] = -A[0][0::2]
+            sc.scoef1[:,-k] = A[0]
+            sc.scoef2[:,-k] = A[1]
+
+    return sc
+
+
+def directivity_boresite( spherical_coefficients ):
+    if isinstance( spherical_coefficients, sp.VectorCoefs):     
+        
+        return _directivity_boresite_implementation( spherical_coefficients )
+
+    else:
+        ValueError("cannot perform reciprocity on this object.") 
+
+def _directivity_boresite_implementation( spherical_coefficients ):
     pass
 
-def directivity( spherical_coefficients ):
-    pass 
+def rotate_around_y_by_pi( spherical_coefficients ):
+    if isinstance( spherical_coefficients, sp.VectorCoefs):     
+        
+        return _rotate_around_y_by_pi_implementation( spherical_coefficients )
+
+    else:
+        ValueError("cannot perform reciprocity on this object.")
+
+def _rotate_around_y_by_pi_implementation( spherical_coefficients ):
+
+    sc = spherical_coefficients.copy()
+
+    A = sc[:,0]
+
+    L = len(A[0])
+    vec = -np.ones(L, dtype=np.complex128)
+    ll =  np.array(list(range(0, L)), dtype=np.complex128)
+    vec = vec**ll
+
+    sc.scoef1[:,0] = A[0][:]*vec
+    sc.scoef2[:,0] = A[1][:]*vec
+
+    for m in range(1, sc.mmax + 1):
+        Am = spherical_coefficients[:,-m]
+        Ap = spherical_coefficients[:, m]
+
+        L = len(Am[0])
+        vec = -np.ones(L, dtype=np.complex128)
+        ll =  m + np.array(list(range(m, L + m)), dtype=np.complex128)
+        vec = vec**ll
+
+        sc.scoef1[:,-m] = Ap[0][:] * vec
+        sc.scoef2[:,-m] = Ap[1][:] * vec
+
+        sc.scoef1[:,m] = Am[0][:] * vec
+        sc.scoef2[:,m] = Am[1][:] * vec
+
+    return sc
+
+
+
 
 def probe_correct( spherical_coefficients, probe):
     pass

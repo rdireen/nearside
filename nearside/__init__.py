@@ -29,8 +29,7 @@ from os.path import dirname
 import sys
 
 
-from nearside.probe import *
-import nearside.spherical.low_level as sphere_low_level
+import nearside.probe as probe
 from nearside.spherical.structures import *
 
 

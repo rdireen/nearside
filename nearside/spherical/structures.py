@@ -63,6 +63,7 @@ err_msg['not_probe'] = "probe must be a valid probe object or None"
 # These coefficients can be transformed back to field values.
 
 class SphericalScalarCoeffs(object):
+    
     pass
 
 class SphericalVectorCoeffs(object):

@@ -37,6 +37,7 @@ from six.moves import range  #use range instead of xrange
 
 import numpy as np
 import nearside.spherical as ns
+import nearside.spherical.low_level
 
 
 class TestSphereLowLevelProbeCorrect(TestCase):
