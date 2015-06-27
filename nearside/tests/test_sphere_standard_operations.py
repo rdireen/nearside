@@ -47,6 +47,8 @@ test_path = "test_data"
 test_reciprocity_directivity_path = "test_reciprocity_directivity"
 test_rotate_around_y_by_pi = "test_rotate_around_y_by_pi"
 test_translate_symmetric_probe = "test_translate_symmetric_probe"
+test_p_correct_response = "test_p_correct_response"
+
 
 msg1 = "not getting full precision between Matlab and Python for reciprocity"
 msg2 = "not getting full precision between Matlab and Python for rotate by pi"
@@ -106,7 +108,7 @@ class TestSphereStandardOperations(TestCase):
                 rcc = nss.reciprocity(rc)
 
                 diff = sp.LInf_coef(rcc - c)
-                self.assertAlmostEqual(diff, 0, places = 14, msg = msg1)
+                self.assertAlmostEqual(diff, 0, places = 14)
 
 
     def test_rotate_around_y_by_pi_matlab(self):
@@ -169,7 +171,7 @@ class TestSphereStandardOperations(TestCase):
                 #getting an error roughly 1e-13. I am not doing any 
                 #arithmetic so I shouldn't have any error???
                 #NEED TO UNDERSTAND THIS
-                self.assertAlmostEqual(diff, 0, places = 10, msg = msg2)
+                self.assertAlmostEqual(diff, 0, places = 10)
 
 
     def test_translate_symmetric_probe_matlab(self):
@@ -254,4 +256,115 @@ class TestSphereStandardOperations(TestCase):
 
                 self.assertAlmostEqual(diff, 0, places = 13, msg = msg3)
 
+
+    def test_probe_correct_compare_matlab(self):
+        """:: Test probe_correct and probe_response from matlab output
+        
+        The test compares the output to the same routine written in Matlab
+        """ 
+
+        print(" ")
+
+        # PROBE CORRECT
+
+        for Nmax in range(6,8):
+            for Mmax in range(Nmax - 1, Nmax + 1):
+                filename_c = "coeffs5_a_%d_%d.tst" % (Nmax, Mmax)
+                filename_rc = "coeffs5_a_pcorrect_%d_%d.tst" % (Nmax, Mmax)
+                filename_p = "coeffs5_p.tst"
+                path_c = os.path.join(path,
+                                      test_path,
+                                      test_p_correct_response,
+                                      filename_c)
+                path_rc = os.path.join(path,
+                                       test_path,
+                                       test_p_correct_response,
+                                       filename_rc)
+                path_p = os.path.join(path,
+                                       test_path,
+                                       test_p_correct_response,
+                                       filename_p)
+
+                print(filename_rc)
+
+                (c_m,d) = fl.load_vcoef(path_c)
+                (rc_m,d) = fl.load_vcoef(path_rc)
+                (p_m,d) = fl.load_vcoef(path_p)
+
+                # Last flag makes this the EXTERNAL case
+                R_python = nss.translate_symmetric_probe(60, p_m, 27,
+                                                   region = nss.external)
+
+                dnm = nss.probe_correct( c_m, R_python)
+
+                diff = sp.LInf_coef(dnm - rc_m)
+
+                self.assertLess(diff, 1e-12)
+
+        # PROBE RESPONSE
+
+        for Nmax in range(6,8):
+            for Mmax in range(Nmax - 1, Nmax + 1):
+                filename_c = "coeffs6_a_%d_%d.tst" % (Nmax, Mmax)
+                filename_rc = "coeffs6_a_presponse_%d_%d.tst" % (Nmax, Mmax)
+                filename_p = "coeffs6_p.tst"
+                path_c = os.path.join(path,
+                                      test_path,
+                                      test_p_correct_response,
+                                      filename_c)
+                path_rc = os.path.join(path,
+                                       test_path,
+                                       test_p_correct_response,
+                                       filename_rc)
+                path_p = os.path.join(path,
+                                       test_path,
+                                       test_p_correct_response,
+                                       filename_p)
+
+                print(filename_rc)
+
+                (c_m,d) = fl.load_vcoef(path_c)
+                (rc_m,d) = fl.load_vcoef(path_rc)
+                (p_m,d) = fl.load_vcoef(path_p)
+
+                # Last flag makes this the EXTERNAL case
+                R_python = nss.translate_symmetric_probe(60, p_m, 27,
+                                                   region = nss.external)
+
+                dnm = nss.probe_response( c_m, R_python)
+
+                diff = sp.LInf_coef(dnm - rc_m)
+
+                self.assertLess(diff, 1e-12)
+
+    def test_probe_correct_and_probe_response(self):
+        """:: Test probe_correct and probe_response based on inverses
+        
+        probe_response is the inverse of probe_correct, this tests that to make
+        sure it's true.
+        """  
+
+        p_m = sp.random_coefs(5, 1, coef_type=sp.vector)
+
+        for Nmax in range(10,14):
+            for Mmax in range(Nmax - 1, Nmax + 1):
                  
+                c_m = sp.random_coefs(Nmax, Mmax, coef_type=sp.vector)
+
+                R_python = nss.translate_symmetric_probe(60, p_m, 27,
+                                                           region = nss.external)
+
+
+                # Do probe response and probe correct here
+                dnm_response = nss.probe_response( c_m, R_python)
+                dnm_corrected = nss.probe_correct( dnm_response, R_python)
+
+                diff = sp.LInf_coef(dnm_corrected - c_m)
+
+                self.assertLess(diff, 1e-12)
+
+
+        
+             
+           
+                    

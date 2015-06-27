@@ -169,7 +169,7 @@ def translate_symmetric_probe( NN, coefficients, kr, region = external):
 
 def probe_correct( coefficients_to_correct, translated_probe_data):
        
-    if isinstance( coefficients, sp.VectorCoefs):
+    if isinstance( coefficients_to_correct, sp.VectorCoefs):
                                                                                  
         R = translated_probe_data
         tsh = coefficients_to_correct
@@ -179,8 +179,8 @@ def probe_correct( coefficients_to_correct, translated_probe_data):
         for n in range(1, tsh.nmax + 1):
             for m in range( -n, n + 1 ):
                 if ( abs(m) <= tsh.mmax ):
-                    M = make_inverse_R_matrix(R, n)
-                    psh[n,m] = np.dot( M, tsh(n, m) )
+                    M = low_level.make_inverse_R_matrix(R, n)
+                    psh[n,m] = list(np.dot( M, tsh[n, m] ))
 
         corrected_coefficients = psh
 
@@ -191,7 +191,26 @@ def probe_correct( coefficients_to_correct, translated_probe_data):
 
 
 def probe_response( coefficients, translated_probe_data):
-    pass
+
+    if isinstance( coefficients, sp.VectorCoefs):
+                                                                                 
+        R = translated_probe_data
+        tsh = coefficients
+        psh = tsh.copy()
+
+        # correct each mode individually
+        for n in range(1, tsh.nmax + 1):
+            for m in range( -n, n + 1 ):
+                if ( abs(m) <= tsh.mmax ):
+                    M = low_level.make_forward_R_matrix(R, n)
+                    psh[n,m] = list(np.dot( M, tsh[n, m] ))
+
+        responded_coefficients = psh
+
+        return responded_coefficients
+
+    else:
+        ValueError("no probe response for this object.")
 
 def transform_to_vcoeffs( transverse_uniform ):
     pass
