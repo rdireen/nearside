@@ -159,7 +159,7 @@ def translate_mu_plus_minus_one_probe(NN, muneg1, mu1, kr, region=external):
 
     return R
 
-def make_inverse_R_matrix(R, idx):
+def make_inverse_R_matrix(R, n):
     M = np.zeros((2, 2), dtype = np.complex128)
 
     M[0, 0] = -R[n, 1] - R[n, 3]
@@ -169,17 +169,21 @@ def make_inverse_R_matrix(R, idx):
 
     det = R[n, 0] * R[n, 3] - R[n, 1] * R[n, 2]
 
-    return M * 1j * np.sqrt((2.0 * n + 1.0) / (4.0 * np.pi)) / ( 2.0 * det)
+    f = np.sqrt((2.0 * n + 1.0) / (4.0 * np.pi))
 
-def make_forward_R_matrix(R, idx):
+    return M * 1j * f / (2.0 * det)
+
+def make_forward_R_matrix(R, n):
     M = np.zeros((2, 2), dtype = np.complex128)
 
-    M[0, 0] = R[n, 1] - R[n, 3]
-    M[0, 1] = R[n, 1] + R[n, 3]
+    M[0, 0] = R[n, 0] - R[n, 2]
+    M[0, 1] = R[n, 1] - R[n, 3]
     M[1, 0] = -R[n, 0] - R[n, 2]
-    M[1, 1] = -R[n, 0] - R[n, 2]
+    M[1, 1] = -R[n, 1] - R[n, 3]
 
-    return M * 1j * np.sqrt((4.0 * np.pi) / (2.0 * n + 1.0))
+    g = np.sqrt((4.0 * np.pi) / (2.0 * n + 1.0))
+
+    return M * 1j * g
 
 def probe_correct(R, tsh):
     """ Corrects the probe response psh to the sh pattern tsh. R is the 4

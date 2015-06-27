@@ -46,9 +46,11 @@ path = os.path.dirname(os.path.realpath(__file__))
 test_path = "test_data"
 test_reciprocity_directivity_path = "test_reciprocity_directivity"
 test_rotate_around_y_by_pi = "test_rotate_around_y_by_pi"
+test_translate_symmetric_probe = "test_translate_symmetric_probe"
 
 msg1 = "not getting full precision between Matlab and Python for reciprocity"
 msg2 = "not getting full precision between Matlab and Python for rotate by pi"
+msg3 = "not getting full precision between Matlab and Python for translation"
 
 class TestSphereStandardOperations(TestCase):
 
@@ -168,3 +170,88 @@ class TestSphereStandardOperations(TestCase):
                 #arithmetic so I shouldn't have any error???
                 #NEED TO UNDERSTAND THIS
                 self.assertAlmostEqual(diff, 0, places = 10, msg = msg2)
+
+
+    def test_translate_symmetric_probe_matlab(self):
+        """:: Test translate_symmetric_probe from matlab output
+        
+        The test compares the output to the same routine written in Matlab
+        """
+
+        print(" ")
+
+        # EXTERNAL: Do the external case first
+
+        for Nmax in range(6,8):
+            for Mmax in range(Nmax - 1, Nmax + 1):
+                filename_c = "coeffs3_%d_%d.tst" % (Nmax, Mmax)
+                filename_rc = "coeffs3_trans_%d_%d.tst" % (Nmax, Mmax)
+                path_c = os.path.join(path,
+                                      test_path,
+                                      test_translate_symmetric_probe,
+                                      filename_c)
+                path_rc = os.path.join(path,
+                                       test_path,
+                                       test_translate_symmetric_probe,
+                                       filename_rc)
+
+                print(filename_rc)
+
+                (c_m,d) = fl.load_vcoef(path_c)
+                (rc_m,d) = fl.load_vcoef(path_rc)
+                
+                # Last flag makes this the EXTERNAL case
+                R_python = nss.translate_symmetric_probe(60, c_m, 27,
+                                                   region = nss.external)
+
+                # Put data from Matlab in the correct format
+                neg = rc_m[:,-1]
+                pos = rc_m[:, 1]
+                muneg1 = np.column_stack(neg)
+                mu1 = np.column_stack(pos)
+                R_matlab = np.column_stack((muneg1,mu1))
+
+
+                diff = np.amax(np.abs(R_python - R_matlab) / 
+                                   (np.abs(R_matlab) + 1e-15))
+
+                self.assertAlmostEqual(diff, 0, places = 13, msg = msg3)
+
+        # INTERNAL: This is the internal case
+
+        for Nmax in range(6,8):
+            for Mmax in range(Nmax - 1, Nmax + 1):
+                filename_c = "coeffs4_%d_%d.tst" % (Nmax, Mmax)
+                filename_rc = "coeffs4_trans_int_%d_%d.tst" % (Nmax, Mmax)
+                path_c = os.path.join(path,
+                                      test_path,
+                                      test_translate_symmetric_probe,
+                                      filename_c)
+                path_rc = os.path.join(path,
+                                       test_path,
+                                       test_translate_symmetric_probe,
+                                       filename_rc)
+
+                print(filename_rc)
+
+                (c_m,d) = fl.load_vcoef(path_c)
+                (rc_m,d) = fl.load_vcoef(path_rc)
+                
+                # Last flag makes this the INTERNAL case
+                R_python = nss.translate_symmetric_probe(60, c_m, 27,
+                                                   region = nss.internal)
+
+                # Put data from Matlab in the correct format
+                neg = rc_m[:,-1]
+                pos = rc_m[:, 1]
+                muneg1 = np.column_stack(neg)
+                mu1 = np.column_stack(pos)
+                R_matlab = np.column_stack((muneg1,mu1))
+
+
+                diff = np.amax(np.abs(R_python - R_matlab) / 
+                                   (np.abs(R_matlab) + 1e-15))
+
+                self.assertAlmostEqual(diff, 0, places = 13, msg = msg3)
+
+                 

@@ -357,6 +357,69 @@ class TestSphereLowLevelProbeCorrect(TestCase):
 
         self.assertLess(max_diff, 1e-12)
 
+    def test_create_make_inverse_R_matrix(self):
+        """:: Test make_inverse_R_matrix based on Matlab data
+
+        
+        """
+
+        sll = ns.low_level
+        r = [[-0.577110307096737 + 0.302320074946896j, -0.836430524453065 + 0.415776190617897j,  0.852969530087173 + 0.042974829304692j,  0.477331178676579 - 0.948853230057176j]]
+
+        m = [[-0.053468344722538 + 0.095064277395650j,  0.307009652156386 + 0.095228485411239j],
+             [-0.031337804398095 + 0.068135670543228j, -0.148282165392831 - 0.197077634474220j]]
+
+        R_matlab = np.array(r, dtype = np.complex128)
+        MB_matlab = np.array(m)
+
+        MB = sll.make_inverse_R_matrix(R_matlab, 0)
+
+        max_diff = np.max( np.abs( MB - MB_matlab ) )
+
+        self.assertLess(max_diff, 1e-14)
+
+    def test_create_make_forward_R_matrix(self):
+        """:: Test make_forward_R_matrix based on Matlab data
+
+        
+        """
+
+        sll = ns.low_level
+        r = [[0.541608366255458 + 0.869552807313267j, -0.821128258718891 + 0.981051414525262j, -1.071905048449092 - 1.758825369139011j, -1.074091636378260 - 0.148095957567039j]]
+
+        m = [[-9.317358040977716 + 5.719756130761577j, -4.002723215809683 + 0.896731825740831j],
+             [ -3.152389153425308 + 1.879852792953050j,  2.952750214636732 + 6.718379602755387j]]
+
+        R_matlab = np.array(r, dtype = np.complex128)
+        MF_matlab = np.array(m)
+
+        MF = sll.make_forward_R_matrix(R_matlab, 0)
+
+        max_diff = np.max( np.abs( MF - MF_matlab ) )
+
+        self.assertLess(max_diff, 1e-14)
+   
+    def test_make_inverse_and_forward_R_matrix(self):
+        """:: Test make_inverse_R_matrix and make_inverse_R_matrix 
+
+        Test the two by making sure they are indeed inverses of one another.
+        """
+        sll = ns.low_level 
+
+        NN = 100
+        R = np.random.rand(NN, 4)
+
+        R[:, 0] = R[:, 0] + 1.5 
+        R[:, 2] = R[:, 2] + 1.0 
+
+        for n in range(NN):
+            MB = sll.make_inverse_R_matrix(R, n)
+            MF = sll.make_forward_R_matrix(R, n)
+
+            Ie = np.mat(MB) * np.mat(MF)
+            max_diff = np.max( np.abs( np.eye(2)  - Ie ) )
+
+            self.assertLess(max_diff, 1e-12)    
 
 
 

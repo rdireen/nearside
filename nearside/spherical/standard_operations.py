@@ -42,12 +42,16 @@ import copy
 #--------------------------------------------------------------------3rd Party
 import numpy as np
 import spherepy as sp
+from . import low_level 
 
 #------------------------------------------------------------------------Custom
 
-#==============================================================================
-# Decorators
-#==============================================================================
+#=============================================================================
+# Global Declarations
+#=============================================================================
+
+external = 0
+internal = 1
 
 
 
@@ -55,20 +59,20 @@ import spherepy as sp
 # Operations
 #==============================================================================
 
-def reciprocity( spherical_coefficients ):
+def reciprocity( coefficients ):
     
-    if isinstance( spherical_coefficients, sp.VectorCoefs): 
+    if isinstance( coefficients, sp.VectorCoefs): 
           
-        return _reciprocity_implemented( spherical_coefficients )
+        return _reciprocity_implemented( coefficients )
 
     else:
         ValueError("cannot perform reciprocity on this object.")
 
 
 
-def _reciprocity_implemented( spherical_coefficients ):
+def _reciprocity_implemented( coefficients ):
 
-    sc = spherical_coefficients.copy()
+    sc = coefficients.copy()
 
     A = sc[:,0]
     A[0][1::2] = -A[0][1::2]
@@ -105,28 +109,18 @@ def _reciprocity_implemented( spherical_coefficients ):
     return sc
 
 
-def directivity_boresite( spherical_coefficients ):
-    if isinstance( spherical_coefficients, sp.VectorCoefs):     
+
+def rotate_around_y_by_pi( coefficients ):
+    if isinstance( coefficients, sp.VectorCoefs):     
         
-        return _directivity_boresite_implementation( spherical_coefficients )
+        return _rotate_around_y_by_pi_implementation( coefficients )
 
     else:
-        ValueError("cannot perform reciprocity on this object.") 
+        ValueError("cannot rotate this object.")
 
-def _directivity_boresite_implementation( spherical_coefficients ):
-    pass
+def _rotate_around_y_by_pi_implementation( coefficients ):
 
-def rotate_around_y_by_pi( spherical_coefficients ):
-    if isinstance( spherical_coefficients, sp.VectorCoefs):     
-        
-        return _rotate_around_y_by_pi_implementation( spherical_coefficients )
-
-    else:
-        ValueError("cannot perform reciprocity on this object.")
-
-def _rotate_around_y_by_pi_implementation( spherical_coefficients ):
-
-    sc = spherical_coefficients.copy()
+    sc = coefficients.copy()
 
     A = sc[:,0]
 
@@ -139,8 +133,8 @@ def _rotate_around_y_by_pi_implementation( spherical_coefficients ):
     sc.scoef2[:,0] = A[1][:]*vec
 
     for m in range(1, sc.mmax + 1):
-        Am = spherical_coefficients[:,-m]
-        Ap = spherical_coefficients[:, m]
+        Am = coefficients[:,-m]
+        Ap = coefficients[:, m]
 
         L = len(Am[0])
         vec = -np.ones(L, dtype=np.complex128)
@@ -155,20 +149,58 @@ def _rotate_around_y_by_pi_implementation( spherical_coefficients ):
 
     return sc
 
+def translate_symmetric_probe( NN, coefficients, kr, region = external):
+
+    if isinstance( coefficients, sp.VectorCoefs): 
+        neg = coefficients[:,-1]
+        pos = coefficients[:, 1]
+
+        muneg1 = np.column_stack(neg)
+        mu1 = np.column_stack(pos)
+        
+        R = low_level.translate_mu_plus_minus_one_probe(NN, muneg1, mu1, kr, 
+                                                        region = region )  
+
+        return R
+
+    else:
+        ValueError("cannot translate this object.")
+     
+
+def probe_correct( coefficients_to_correct, translated_probe_data):
+       
+    if isinstance( coefficients, sp.VectorCoefs):
+                                                                                 
+        R = translated_probe_data
+        tsh = coefficients_to_correct
+        psh = tsh.copy()
+
+        # correct each mode individually
+        for n in range(1, tsh.nmax + 1):
+            for m in range( -n, n + 1 ):
+                if ( abs(m) <= tsh.mmax ):
+                    M = make_inverse_R_matrix(R, n)
+                    psh[n,m] = np.dot( M, tsh(n, m) )
+
+        corrected_coefficients = psh
+
+        return corrected_coefficients
+
+    else:
+        ValueError("cannot probe correct this object.")
 
 
-
-def probe_correct( spherical_coefficients, probe):
+def probe_response( coefficients, translated_probe_data):
     pass
 
 def transform_to_vcoeffs( transverse_uniform ):
     pass
 
-def transform_to_transverse_uniform( vector_coeffs ):
+def transform_to_transverse_uniform( coefficients ):
     pass
 
 def transform_to_far_field( vector_coeffs ):
     pass
 
-def transform_to_local_field( vector_coeffs, radius_meters ):
+def transform_to_local_field( coefficients, radius_meters ):
     pass
