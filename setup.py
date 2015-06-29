@@ -58,6 +58,14 @@ except ImportError:
 
 description = 'A package for processing antenna near-field measurements.'
  
+""" ***IMPORTANT*** note about distutils
+
+package_data is only for binary builds and not source distributions.
+MANIFEST.in is for source and not binary.
+
+So if you want a data file in the binary builds and the source builds
+you have to point to them with package_data AND MANIFEST.in.
+"""
 
 setup(name='nearside',
       version=__version__,
