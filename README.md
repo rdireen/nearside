@@ -5,8 +5,6 @@
 
 NearSide
 ========
-Because we make more sense than The Far Side.
-
 Description: a package for processing antenna near-field data.
 
 Install
@@ -26,12 +24,18 @@ I have been building NumPy using the pip method, but it takes a long time.
 
 Once you have NumPy, install NearSide with 
 
-    $ sudo pip install nearside (COMMING SOON)
+    $ sudo pip install nearside 
     
 **Windows:**
-Make sure you have Numpy on your machine, then
+Make sure you have Numpy on your machine (I recommend using Anaconda), then
 
-    $ pip install nearside (COMMING SOON)
+    $ pip install nearside 
+
+Credits
+=======
+The algorithms within this package have been implemented, in part, using the documentation within 
+the NIST Interagency/Internal Report (NISTIR) - 3955 [citation](http://www.nist.gov/manuscript-publication-search.cfm?pub_id=1051).
+The majority or the code, however, has been developed using Ronald C. Wittmann's unpublished notes.
 
 
 Contributing
