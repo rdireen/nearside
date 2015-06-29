@@ -223,3 +223,30 @@ def transform_to_far_field( vector_coeffs ):
 
 def transform_to_local_field( coefficients, radius_meters ):
     pass
+
+def standard_cuts( transverse_pattern_uniform ):
+    """ The magnitude of the cuts along phi = 0 [deg] and phi = 90 [deg] 
+    
+    
+    """
+
+    mt = transverse_pattern_uniform.theta_double
+    mp = transverse_pattern_uniform.phi_double
+
+    mag = np.sqrt( np.abs(mt) ** 2 + np.abs(mp) ** 2 )
+
+    cut_phi_0 = mag[:,0]
+    L = mag.shape[1]
+    idx = int( L / 4 )
+    cut_phi_90 = mag[:,idx]
+
+    front = cut_phi_0[0 : int( cut_phi_0.shape[0] / 2 ) - 1]
+    back = cut_phi_0[int( cut_phi_0.shape[0] / 2 ) - 1 ::]
+    cut_phi_0 = np.concatenate((back,front))
+
+    front = cut_phi_90[0 : int( cut_phi_90.shape[0] / 2 ) - 1]
+    back = cut_phi_90[int( cut_phi_90.shape[0] / 2 ) - 1 ::]
+    cut_phi_90 = np.concatenate((back,front))
+
+    return (cut_phi_0, cut_phi_90)
+
