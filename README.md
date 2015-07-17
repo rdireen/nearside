@@ -3,6 +3,12 @@
 [![Build Status](https://travis-ci.org/rdireen/nearside.svg?branch=master)](https://travis-ci.org/rdireen/nearside) 
 [![Coverage Status](https://coveralls.io/repos/rdireen/nearside/badge.svg?branch=master)](https://coveralls.io/r/rdireen/nearside?branch=master)
 
+[![Latest Version](https://img.shields.io/pypi/v/nearside.svg)](https://pypi.python.org/pypi/spherepy/)
+[![Supported Python versions](https://img.shields.io/pypi/pyversions/nearside.svg)](https://pypi.python.org/pypi/spherepy/)
+[![Supported Python implementations](https://img.shields.io/pypi/implementation/nearside.svg)](https://pypi.python.org/pypi/spherepy/)
+[![Development Status](https://img.shields.io/pypi/status/nearside.svg)](https://pypi.python.org/pypi/spherepy/)
+[![Download format](https://img.shields.io/pypi/format/nearside.svg)](https://pypi.python.org/pypi/spherepy/)
+
 NearSide
 ========
 Description: a package for processing antenna near-field data.

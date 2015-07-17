@@ -64,13 +64,33 @@ internal = 1
 #==============================================================================
 
 def reciprocity( coefficients ):
+    """Return reciprocal version of the VectorCoefs object *coefficients*.
+    The operation maps the direction vector **r** to -**r**. 
+
+    Example::
+
+        >>> c = spherepy.random_coefs(3,3)
+        >>> p = nearside.spherical.reciprocity(c)
+        >>> print(p)
+
+    Args:
+      coefficients (VectorCoefs): The coefficients to be transformed to 
+      pattern space.
+
+    Returns:
+      VectorCoefs: This is the reciprocal version of the input coefficients. 
+
+    Raises:
+      TypeError: Is raised if coefficients isn't a VectorCoefs object.
+
+    """
     
     if isinstance( coefficients, sp.VectorCoefs): 
           
         return _reciprocity_implemented( coefficients )
 
     else:
-        ValueError("cannot perform reciprocity on this object.")
+        TypeError("cannot perform reciprocity on this object.")
 
 
 
@@ -115,12 +135,30 @@ def _reciprocity_implemented( coefficients ):
 
 
 def rotate_around_y_by_pi( coefficients ):
+    """Rotates the probe by pi radians in coefficient space.
+
+    Example::
+
+        >>> c = spherepy.random_coefs(3,3)
+        >>> p = nearside.spherical.rotate_around_y_by_pi(c)
+        >>> print(p)
+
+    Args:
+      coefficients (VectorCoefs): The coefficients to be rotated. 
+
+    Returns:
+      VectorCoefs: This is the rotated version of the input coefficients. 
+
+    Raises:
+      TypeError: Is raised if coefficients isn't a VectorCoefs object.
+
+    """
     if isinstance( coefficients, sp.VectorCoefs):     
         
         return _rotate_around_y_by_pi_implementation( coefficients )
 
     else:
-        ValueError("cannot rotate this object.")
+        TypeError("cannot rotate this object.")
 
 def _rotate_around_y_by_pi_implementation( coefficients ):
 
@@ -168,10 +206,16 @@ def translate_symmetric_probe( NN, coefficients, kr, region = external):
         return R
 
     else:
-        ValueError("cannot translate this object.")
+        TypeError("cannot translate this object.")
      
 
 def probe_correct( coefficients_to_correct, translated_probe_data):
+    """Correctes the measured data using the probe data.
+    Probe correction is performed in coefficient space.
+
+    
+
+    """
        
     if isinstance( coefficients_to_correct, sp.VectorCoefs):
                                                                                  
@@ -191,7 +235,7 @@ def probe_correct( coefficients_to_correct, translated_probe_data):
         return corrected_coefficients
 
     else:
-        ValueError("cannot probe correct this object.")
+        TypeError("cannot probe correct this object.")
 
 
 def probe_response( coefficients, translated_probe_data):
@@ -214,7 +258,7 @@ def probe_response( coefficients, translated_probe_data):
         return responded_coefficients
 
     else:
-        ValueError("no probe response for this object.")
+        TypeError("no probe response for this object.")
 
 def transform_to_vcoeffs( transverse_uniform ):
     pass
